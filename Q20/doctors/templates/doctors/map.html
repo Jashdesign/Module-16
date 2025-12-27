@@ -1,0 +1,57 @@
+{% load static %}
+{% load json_script %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Finder Map</title>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Find Doctors</h2>
+
+<div id="map"></div>
+
+{{ doctors|json_script:"doctors-data" }}
+
+<script>
+function initMap() {
+    const center = { lat: 20.5937, lng: 78.9629 };
+
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 5,
+        center: center
+    });
+
+    const doctors = JSON.parse(
+        document.getElementById("doctors-data").textContent
+    );
+
+    doctors.forEach(doctor => {
+        if (doctor.latitude && doctor.longitude) {
+            new google.maps.Marker({
+                position: {
+                    lat: doctor.latitude,
+                    lng: doctor.longitude
+                },
+                map: map,
+                title: `${doctor.name} (${doctor.specialization})`
+            });
+        }
+    });
+}
+</script>
+
+<script
+  src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"
+  async defer>
+</script>
+
+</body>
+</html>
