@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+    <script src="{% static 'js/validation.js' %}" defer></script>
+</head>
+<body>
+
+<h2>User Registration</h2>
+
+{% if success %}
+<p style="color: green;">Registration successful!</p>
+{% endif %}
+
+<form id="registerForm" method="POST">
+    {% csrf_token %}
+
+    <input type="text" id="username" name="username" placeholder="Username">
+    <p id="usernameError" style="color:red;"></p>
+
+    <input type="email" id="email" name="email" placeholder="Email">
+    <p id="emailError" style="color:red;"></p>
+
+    <input type="password" id="password" name="password" placeholder="Password">
+    <p id="passwordError" style="color:red;"></p>
+
+    <input type="password" id="confirmPassword" placeholder="Confirm Password">
+    <p id="confirmError" style="color:red;"></p>
+
+    <button type="submit">Register</button>
+</form>
+
+</body>
+</html>
